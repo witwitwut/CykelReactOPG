@@ -1,0 +1,21 @@
+.placeholder{
+    width: 250px;
+    height: 250px;
+    display: flex;
+    padding: 2px;
+    margin: 2px;    
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.placeholder p {
+    width: 250px;
+    font-size: 10px
+}
+
+
+img{
+    object-fit: cover;
+    height: 55%;
+
+}
