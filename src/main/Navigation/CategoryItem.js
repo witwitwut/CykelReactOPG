@@ -1,14 +1,16 @@
 import React from "react"
+import "./CategoryItem.css"
 
-const CategoryItem = (ListItem) => {
-    const { id, title, img, listLength } = ListItem
+const CategoryItem = (categori) => {
+    const {  id, count, link, name  } = categori
+    console.log("categori fra categoryItem",categori)
 
     return (
         // <Link>
-        <div>
-            <img src={img} />
-            <h3>{title}</h3>
-            <span>{listLength}</span>
+        <div className={"placeholderCategoryItem"}>
+            <img />
+            <h3>{name}</h3>
+            <p>{count}</p>
         </div>
         // </Link>
     )

@@ -1,5 +1,6 @@
 import BicycleItem from "../bicycle/BicycleItem"
 import React from "react"
+import CategoryItem from "./CategoryItem"
 
 
 class Listview extends React.Component {
@@ -8,14 +9,14 @@ class Listview extends React.Component {
 
 
     render() {
-
+        const { id, count, link, name, _links } = this.props
         return(
             <section>
-                <article>
-                    <header>
-                        <h3></h3>
-                    </header>                
-                </article>
+                {
+                    this.props.categories.map( categori => (
+                        <CategoryItem key={categori.id} categori={categori} />
+                    ))
+                }
             </section>
         )
     }
