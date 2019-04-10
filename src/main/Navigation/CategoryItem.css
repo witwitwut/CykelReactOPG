@@ -1,8 +1,13 @@
 .placeholderCategoryItem{
     display: flex;
+    flex-direction: row;
     width: 250px;
     height: 250px;
     background: purple;
-    color: black;
+}
+
+.placeholderCategoryItem p{
+    color: white;
+
 }
 

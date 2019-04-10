@@ -1,5 +1,4 @@
 import React from "react"
-import BicycleItem from "./BicycleItem"
 
 const Bicycles = ({bicycles}) => {
     

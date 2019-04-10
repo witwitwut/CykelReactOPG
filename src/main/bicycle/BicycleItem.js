@@ -14,7 +14,7 @@ const BicycleItem = ({bicycle}) => {
         // <Link>
         
             <article className={"placeholder"}>
-                    <img src={_embedded[`wp:featuredmedia`][0].source_url} />
+                    <img src={_embedded[`wp:featuredmedia`][0].source_url} alt={title.rendered} />
                     <h3>{title.rendered}</h3>
                     <p>{result}</p>
             </article>

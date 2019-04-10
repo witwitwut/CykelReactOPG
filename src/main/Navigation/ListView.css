@@ -1,0 +1,20 @@
+.placeholderObjects{
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    height: 800px;
+}
+
+.bicycleObjects{
+    display: flex;
+    padding: 5px;
+    margin: 2px;
+    height: 50%    
+}
+
+.categoriObjects{
+    display: flex;
+    padding: 5px;
+    margin: 2px;
+    height: 50%;
+}

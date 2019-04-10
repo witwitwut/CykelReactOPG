@@ -1,10 +1,6 @@
 import React from "react"
 import "./Main.css"
-import Bicycles from "./bicycle/Bicycles";
-import BicycleItem from "./bicycle/BicycleItem"
-import CategoryItem from "./Navigation/CategoryItem";
 import Listview from "./Navigation/Listview";
-import { Object } from "core-js";
 
 class Main extends React.Component{
  
@@ -14,11 +10,16 @@ class Main extends React.Component{
         url: `http://bicycleinnovationlab.kljo.aspitcloud.dk/wp-json/wp/v2/`,
         bikeurl: `http://bicycleinnovationlab.kljo.aspitcloud.dk/wp-json/wp/v2/product?_embed`,
         categoriurl: `http://bicycleinnovationlab.kljo.aspitcloud.dk/wp-json/wp/v2/categories`,
+        categoriimgurl: `http://bicycleinnovationlab.kljo.aspitcloud.dk/wp-json/wp/v2/posts?categories=`,
     }
     
     componentDidMount(){
         this.fetchBicycles(this.state.bikeurl)
         this.fetchCategories(this.state.categoriurl)
+    }
+
+    setCategories = categories => {
+        this.setState({categories})
     }
 
     onChange = data => {
@@ -37,46 +38,70 @@ class Main extends React.Component{
         .catch(error => console.log(error))
     }
 
-    fetchBicycles = url =>{
-        fetch(url)
-        .then(response => response.json())
-        .then(data => this.storeData(this.state.bicycles ,data ))
-        .catch(error => console.log(error))
+    async fetchBicycles(url){
+        
+        const response = await fetch(url)
+        const data = await response.json()
+        return this.storeBicycles(data)
     }
 
-    storeData(arrName, data){
-            arrName = data.map( bicycle => {
-            //      [ id, count, link, name, _links ]
-
-            //     const { id, count, link, name, _links } = { id: 20, count: 4, link: "", name: "nameString", _links: "httpString" }
-                
-                Object.assign( bicycle, { ...this.para })
-                console.log(bicycle)
-                return { bicycle }
-             } )
-             this.setState({arrName})
-             console.log("Test",arrName)
-         }
-
-    storeCategories = data => {
+    // fetchCategoryImage(url, id) {
+    //     console.log("fetchCategoryImage", id)
+    //     return fetch(url+id)
+    //     .then(response => response.json())
+    //     .then(data =>  this.returnCategoryImage(data))
+    //     .catch(error => console.log(error))        
+    // }
+    
+   async fetchCategoryImage(url, id) {
+        console.log("fetchCategoryImage", id)
+        const response = await fetch(url+id);
+        const data = await response.json()
+        return this.returnCategoryImage(data);
+        /*return fetch(url+id)
+        .then(response => response.json())
+        .then(data =>  this.returnCategoryImage(data))
+        .catch(error => console.log(error))        */
+    }
+    
+    returnCategoryImage = categoryObj => {
+        console.log("returnCategoryImage",categoryObj);
         
-        const categories = data.map(result => {
+        return categoryObj.map(result => {
+            const imageurl = result.featured_image_urls.full[0]
+            return imageurl
+        })
+
+    
+    }
+
+    storeCategories = (data) => {
+
+        console.log("storeCategories", data)
+        
+        const categories = data.map(async result => {
             const { id, count, link, name, _links } = result
-            return { id, count, link, name, _links }
+            const categoriImg = await this.fetchCategoryImage(this.state.categoriimgurl, id)
+
+            return { id, count, link, name, _links, categoriImg  }
+            
         } )
-        this.setState({ categories })
-        console.log("mit categori array", categories)
+        Promise.all(categories).then(result =>  
+            {
+                this.setState({ categories : result })
+                console.log("categories!!!!!!!",result)
+        })
+
+       
     }
 
     storeBicycles = data => {
-        console.log("arrayet før jeg har deconstrutet det",data)
         const bicycles = data.map( result => {
             const { id, title, _embedded, excerpt, content } = result
             return { id, title, _embedded, excerpt, content}            
            
         })
         this.setState({ bicycles })
-        console.log("mit array",bicycles)
              
     }
 
@@ -86,12 +111,6 @@ class Main extends React.Component{
         return (
         <section className="main">
             <h2>To Be Made</h2>
-            <div className={"Placeholder"}>
-                {this.state.bicycles.map( bicycle => (
-                    <BicycleItem key={bicycle.id} bicycle={bicycle} />
-                    ))
-                }
-            </div>
             <div className={"placeholder"}>
 
             <Listview  
